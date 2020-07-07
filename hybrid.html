@@ -1,0 +1,208 @@
+<html>
+<head><style>.image:hover  {opacity: 0.8} </style> </head>
+<body>
+
+<canvas id="myCanvas" width="1512" height="500" style="border:3px solid #d3d3d3;" onclick="imgDraw1()">
+                      </canvas>
+
+<script  onLoad=initialise()>
+function getMousePos(canvas, evt) {
+var rect = canvas.getBoundingClientRect();
+return{
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top };
+      }
+    var canvas = document.getElementById('myCanvas');
+    var context = canvas.getContext('2d');
+
+    canvas.addEventListener('mousemove', function(evt) {
+    var mousePos = getMousePos(canvas, evt);
+    var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+    a=  mousePos.x;    b= mousePos.y;  
+    writeMessage(canvas, message);}, false);
+
+    var ipc; var pcount; var output; var pccount; var ak; var lccount; var lcount; var px1,px2,py1,py2; var comon; var value; var colorln; var sup1; var sup2; var sup3; var sup4;
+    var pccoarrx = [];   var pccoarry = [];    var l1coarrx= [];   var l1coarry= [];   var l2coarrx= [];   var l2coarry= [];   var i;   var j; var k; var l ; var m; var n;
+    var isw;   var swon;      var swcount;  var bk;
+    var swcoarrx =[] ;     var swcoarry =[]; 
+    ipc = 0 ;   pcount=0;   pccount=0;   lccount=0;    lcount=0;   comon =0;   value=0;
+    isw=0;    swon=0;    swcount=0;   
+    m=11;  n=21;
+    function initialise(){
+        ipc = 0 ;   pcount=0;   pccount=0;   lccount=0;    lcount=0;   comon =0;   value=0;
+        isw=0;    swon=0;    swcount=0;   
+        m=11;  n=21;
+        }
+    function imgDraw(id){
+        lccount=0;
+        if(id=="com" || id=="lap"){       
+            ipc++;  comon=1;
+            ak=id;
+	        }
+        if(id=="iswitch" || id=="iswitch1"){
+            isw++;  swon=1;   bk=id;    
+            }
+        }
+    function lineDraw(id){              
+        comon=0;
+        lcount++;
+        lccount =1;
+        if(id=="ico"){
+		    colorln="red";
+		    lnsize=3;
+	    }
+        if(id=="icoax"){
+		    colorln="yellow";
+		    lnsize=3;
+	    }
+        if(id=="ifopt"){
+		    colorln="#0070C1";
+		    lnsize=3;
+      	}
+        if(id=="iro"){
+		    colorln="#0BBE19";
+		    lnsize=3;
+	    }
+        if(id=="ist"){
+		    colorln="black";
+		    lnsize=3;
+	    }
+    } 
+
+    function imgDraw1(){       
+        if(pcount<12  && comon==1){
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            if(ak=="com"){
+            var img = document.getElementById(ak);
+            ctx.drawImage(img, a, b,108,108); }
+            if(ak=="lap"){
+            var img = document.getElementById(ak);
+            ctx.drawImage(img, a, b,115,86); }  
+            pccoarrx [ipc] = a ; 
+            pccoarry [ipc] = b ;       
+            comon =0;
+            pcount++;
+        } 
+        if(isw<12 && swcount<21  && swon==1){
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            if(bk=="iswitch"){
+            var img = document.getElementById(bk);
+            ctx.drawImage(img, a, b,132,65);  }
+            if(bk=="iswitch1"){
+            var img = document.getElementById(bk);
+            ctx.drawImage(img, a, b,168,105);  }
+            swcoarrx [isw] = a ; 
+            swcoarry [isw] = b ;       
+            swon =0;
+            swcount++;
+        }
+        if(lccount==2){       
+            l2coarrx[lcount] = a;
+            l2coarry[lcount] = b;
+            var c = document.getElementById("myCanvas");
+		    var ctx = c.getContext("2d");
+		    ctx.beginPath();
+		    ctx.moveTo( l1coarrx[lcount], l1coarry[lcount]);
+		    ctx.lineTo(l2coarrx[lcount], l2coarry[lcount]);
+		    ctx.strokeStyle=colorln;
+		    ctx.lineWidth=lnsize;
+		    ctx.stroke();
+            lccount=0; 
+            lcount++;
+        }
+        else{         
+            if(lccount==1){      
+                l1coarrx[lcount] = a;
+                l1coarry[lcount] = b;
+                lccount=2;    
+                }
+            }  
+        }
+
+function getOption() { 
+            window.location.replace("main.html");
+        } 
+
+function reset(){      
+        var c = document.getElementById("myCanvas");
+ 	    var ctx = c.getContext("2d");
+        ctx.clearRect(3, 3, 1512, 500);
+        ipc = 0 ;   pcount=0;   pccount=0;   lccount=0;    lcount=0;  comon =0;   value=0;    isw=0; 
+        document.getElementById("star").value = 0;
+        document.getElementById("bus").value = 0;
+        document.getElementById("ring").value = 0;
+        document.getElementById("mesh").value = 0;
+        document.getElementById("s").checked = false;
+        document.getElementById("b").checked = false;
+        document.getElementById("r").checked = false;
+        document.getElementById("m").checked = false;
+            }        
+
+function evaltop(){
+            var star = Number(document.getElementById("star").value);
+            var bus = Number(document.getElementById("bus").value);
+            var ring = Number(document.getElementById("ring").value);
+            var mesh = Number(document.getElementById("mesh").value);
+            var s = document.getElementById("s").checked;
+            var b = document.getElementById("b").checked;
+            var r = document.getElementById("r").checked;
+            var m = document.getElementById("m").checked;
+            
+        if(s==true && b==true && r==true && m==true && (star+bus+ring+mesh==ipc) && (1+bus+ring+mesh<=isw) && ((lcount-3)>=((star*2)+((bus*4)-2)+(ring*4)+(mesh*(mesh-1)+(mesh*2))))){      
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Bus + Ring + Mesh)");}
+        else if(s==true && b==true && r==true && m==false && (star+bus+ring==ipc) && (bus+ring+1<=isw) && ((lcount-2)>=(((bus*4)-2)+(ring*4)+(star*2)))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Bus + Ring)");}
+        else if(s==true && b==false && r==true && m==true && (star+ring+mesh==ipc) && (1+ring+mesh<=isw) && ((lcount-2)>=((star*2)+(ring*4)+(mesh*(mesh-1)+(mesh*2))))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Ring + Mesh)");}
+        else if(s==false && b==true && r==true && m==true && (bus+ring+mesh==ipc) && (bus+ring+mesh==isw) && ((lcount-2)>=(((bus*4)-2)+(ring*4)+(mesh*(mesh-1)+(mesh*2))))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Bus + Ring + Mesh)");}
+        else if(s==true && b==true && r==false && m==true && (star+bus+mesh==ipc) && (1+bus+mesh<=isw) && ((lcount-2)>=((star*2)+((bus*4)-2)+(mesh*(mesh-1)+(mesh*2))))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Bus + Mesh)");}
+        else if(s==true && b==true && r==false && m==false && (star+bus==ipc) && (1+bus<=isw) && ((lcount-1)>=((star*2)+((bus*4)-2)))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Bus)");}
+        else if(s==true && b==false && r==true && m==false && (star+ring==ipc) && (ring+1<=isw) && ((lcount-1)>=((ring*4)+(star*2)))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Ring)");}
+        else if(s==true && b==false && r==false && m==true && (star+mesh==ipc) && (mesh+1<=isw) && ((lcount-1)>=((mesh*(mesh-1)+(mesh*2))+star*2))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Star + Mesh)");}
+        else if(s==false && b==true && r==true && m==false && (bus+ring==ipc) && (bus+ring==isw) && ((lcount-1)>=(((bus*4)-2)+(ring*4)))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Bus + Ring)");}
+        else if(s==false && b==true && r==false && m==true && (bus+mesh==ipc) && (bus+mesh==isw) && ((lcount-1)>=(((bus*4)-2)+(mesh*(mesh-1)+(mesh*2))))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Bus + Mesh)");}
+        else if(s==false && b==false && r==true && m==true && (ring+mesh==ipc) && (ring+mesh==isw) && ((lcount-1)>=((ring*4)+(mesh*(mesh-1)+(mesh*2))))){
+            alert("Correct! Connection Established! The computers are connected in Hybrid Topology(Ring + Mesh)");}
+        else {
+            alert("Wrong, Please Try Again");}
+        }
+
+ </script>
+<div style="margin-top:10px">
+<label>Select the Sub-Networks and Enter the Number of Devices directly connected to each Sub-Network of the Hybrid Topology</label><br>
+<input type="radio" id="s">
+<label for="star">Star:</label>
+<input id="star" value="0">
+<input type="radio" id="b">
+<label for="bus">Bus:</label>
+<input id="bus" value="0">
+<input type="radio" id="r">
+<label for="ring">Ring:</label>
+<input id="ring" value="0">
+<input type="radio" id="m">
+<label for="mesh">Mesh:</label>
+<input id="mesh" value="0"> &nbsp&nbsp&nbsp&nbsp&nbsp<img id="back" title="Back" width="40" height="36" class="image" src="images/back.png"  onclick="getOption()">
+<br>
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="com" title="PC" width="108" height="108" class="image" src="images/computer.png"  onclick="imgDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="lap" title="Laptop" width="115" height="86" class="image" src="images/laptop.png"  onclick="imgDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="iswitch" title="Hub" width="132" height="75" class="image" src="images/iswitch.png" onclick="imgDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="iswitch1" title="Switch" width="168" height="105" class="image" src="images/iswitch1.png" onclick="imgDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="ico" title="Crossover Cable" width="100" height="100" class="image" src="images/coo.png"  onclick="lineDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="icoax" title="Coaxial Cable" width="100" height="100" class="image" src="images/cox.png"  onclick="lineDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="ifopt" title="Fibre Optic Cable" width="100" height="100" class="image" src="images/fb.png"  onclick="lineDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="iro" title="Rollover Cable" width="100" height="100" class="image" src="images/ro.png"  onclick="lineDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="ist" title="Straight Cable" width="100" height="100" class="image" src="images/st2.png"  onclick="lineDraw(id)">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="ireset" title="Reset" width="118" height="108" class="image" src="images/ree.png"  onclick="reset()">
+        &nbsp&nbsp&nbsp&nbsp&nbsp<img id="ievaluate" title="Check" width="100" height="100" class="image" src="images/ev.png"  onclick="evaltop()"> 
+            </div>
+    </body>
+</html>
